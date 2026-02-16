@@ -1,12 +1,14 @@
+import { capitalize } from '../utils/strings.js';
+
 function PokemonCard({ pokemon }) {
   return (
     <article className="card">
-      <img src={pokemon.image} alt={pokemon.name} loading="lazy" />
+      <img src={pokemon.image} alt={capitalize(pokemon.name)} loading="lazy" />
       <div className="card__body">
-        <h2>#{pokemon.id} · {pokemon.name}</h2>
+        <h2>#{pokemon.id} · {capitalize(pokemon.name)}</h2>
         <ul className="types">
           {pokemon.types.map((type) => (
-            <li key={type}>{type}</li>
+            <li key={type}>{capitalize(type)}</li>
           ))}
         </ul>
         <dl className="stats">
