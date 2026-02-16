@@ -1,10 +1,14 @@
 import './App.css';
+import Layout from './components/Layout.jsx';
+import Header from './components/Header.jsx';
 
 function App() {
   return (
-    <main className="app">
-      <h1>PokéAgenda</h1>
-    </main>
+    <div className="app">
+      <Layout>
+        <Header />
+      </Layout>
+    </div>
   );
 }
 
