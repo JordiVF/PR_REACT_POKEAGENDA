@@ -4,6 +4,7 @@ import Layout from './components/Layout.jsx';
 import Header from './components/Header.jsx';
 import SearchForm from './components/SearchForm.jsx';
 import PokemonGrid from './components/PokemonGrid.jsx';
+import Feedback from './components/Feedback.jsx';
 import { fetchPokemonList } from './services/pokeapi.js';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     async function loadPokemons() {
       try {
         setStatus('loading');
+        setError(null);
         const data = await fetchPokemonList();
         setPokemons(data);
         setStatus('success');
@@ -27,8 +29,6 @@ function App() {
 
     loadPokemons();
   }, []);
-
-//El array de dependencias vacío ([]) indica que el efecto solo se ejecutará una vez al montar el componente. No añadimos fetchPokemonList como dependencia porque es una función importada estática que no cambia entre renders.
 
   const filteredPokemons = useMemo(() => {
     const trimmedQuery = query.trim().toLowerCase();
@@ -42,6 +42,8 @@ function App() {
     );
   }, [pokemons, query]);
 
+  const noResults = status === 'success' && !filteredPokemons.length;
+
   return (
     <div className="app">
       <Layout>
@@ -51,7 +53,13 @@ function App() {
           onChange={setQuery}
           onReset={() => setQuery('')}
         />
-        <PokemonGrid items={filteredPokemons} />
+        <Feedback status={status} errorMessage={error} />
+        {!noResults && <PokemonGrid items={filteredPokemons} />}
+        {noResults && (
+          <p className="empty">
+            No encontramos ningún Pokémon con ese nombre. Intenta con otro.
+          </p>
+        )}
       </Layout>
     </div>
   );
