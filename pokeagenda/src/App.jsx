@@ -8,6 +8,7 @@ import Feedback from './components/Feedback.jsx';
 import { fetchPokemonList } from './services/pokeapi.js';
 import { tipoTraducido } from './utils/strings.js';
 import TypeFilter from './components/TypeFilter.jsx';
+import Pagination from './components/Pagination.jsx';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -16,15 +17,21 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState('');
   const [types, setTypes] = useState([]);
+  const PAGE_SIZE = 50;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function loadPokemons() {
       try {
         setStatus('loading');
         setError(null);
-        const data = await fetchPokemonList();
+
+        const offset = (page - 1) * PAGE_SIZE;
+        const data = await fetchPokemonList(PAGE_SIZE, offset);
+
         setPokemons(data);
         setStatus('success');
+
       } catch (error) {
         setError(error.message);
         setStatus('error');
@@ -32,7 +39,7 @@ function App() {
     }
 
     loadPokemons();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/type')
@@ -82,9 +89,16 @@ function App() {
             labels={tipoTraducido}
         />
 
+        <Pagination
+          page={page}
+          onPrev={() => setPage(p => Math.max(1, p - 1))}
+          onNext={() => setPage(p => p + 1)}
+        />
+
         <Feedback status={status} errorMessage={error} />
 
         {!noResults && <PokemonGrid items={filteredPokemons} />}
+
 
         {noResults && (
           <p className="empty">

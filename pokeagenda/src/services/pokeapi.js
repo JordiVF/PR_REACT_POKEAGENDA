@@ -1,7 +1,7 @@
 const API_BASE = 'https://pokeapi.co/api/v2';
 
-export async function fetchPokemonList(limit = 151) {
-  const response = await fetch(`${API_BASE}/pokemon?limit=${limit}`);
+export async function fetchPokemonList(limit = 151, offset = 0) {
+  const response = await fetch(`${API_BASE}/pokemon?limit=${limit}&offset=${offset}`);
 
   if (!response.ok) {
     throw new Error('No se pudo cargar la lista de Pokémon');
