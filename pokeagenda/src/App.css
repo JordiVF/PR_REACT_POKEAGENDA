@@ -4,12 +4,33 @@
   --text: #212121;
   --surface: #ffffff;
   --radius: 16px;
+  --bg-gradient: linear-gradient(135deg, #ffebee, #fffde7);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+.dark {
+  --primary: #ff6f61;
+  --secondary: #ffd54f;
+  --text: #f5f5f5;
+  --surface: #1e1e1e;
+  --bg-gradient: linear-gradient(135deg, #121212, #1c1c1c); 
 }
 
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffebee, #fffde7);
+  background: var(--bg-gradient);
   padding: 32px;
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .layout {
@@ -115,7 +136,7 @@
 }
 
 .stats div {
-  background: #f6f6f6;
+  background: rgba(255,255,255,0.06);
   border-radius: 12px;
   padding: 8px;
   display: flex;
@@ -253,6 +274,22 @@
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.theme-toggle {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+  margin-bottom: 16px;
+}
+
+body.dark .type-filter__select {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
 }
 
 @media (max-width: 720px) {

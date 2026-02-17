@@ -9,6 +9,7 @@ import { fetchPokemonList } from './services/pokeapi.js';
 import { tipoTraducido } from './utils/strings.js';
 import TypeFilter from './components/TypeFilter.jsx';
 import Pagination from './components/Pagination.jsx';
+import ThemeToggle from './components/ThemeToggle.jsx';
 
 function App() {
   const [query, setQuery] = useState(() =>
@@ -25,6 +26,9 @@ function App() {
   const [page, setPage] = useState(() =>
     Number(localStorage.getItem('page')) || 1
   );
+  const [darkMode, setDarkMode] = useState(() =>
+  localStorage.getItem('darkMode') === 'true'
+);
 
   useEffect(() => {
     async function loadPokemons() {
@@ -71,6 +75,15 @@ function App() {
     localStorage.setItem('page', page);
   }, [page]);
 
+useEffect(() => {
+  localStorage.setItem('darkMode', darkMode);
+  if (darkMode) {
+    document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+  }
+}, [darkMode]);
+
   const filteredPokemons = useMemo(() => {
     const trimmedQuery = query.trim().toLowerCase();
 
@@ -93,6 +106,11 @@ function App() {
     <div className="app">
       <Layout>
         <Header />
+
+        <ThemeToggle
+          dark={darkMode}
+          onToggle={() => setDarkMode(v => !v)}
+        />
 
         <SearchForm
           value={query}
