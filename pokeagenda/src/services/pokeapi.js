@@ -28,5 +28,10 @@ export async function fetchPokemonList(limit = 151) {
     types: pokemon.types.map((typeInfo) => typeInfo.type.name),
     weight: pokemon.weight / 10,
     height: pokemon.height / 10,
+    stats: {
+      hp: pokemon.stats.find(s => s.stat.name === 'hp').base_stat,
+      attack: pokemon.stats.find(s => s.stat.name === 'attack').base_stat,
+      defense: pokemon.stats.find(s => s.stat.name === 'defense').base_stat,
+    },
   }));
 }

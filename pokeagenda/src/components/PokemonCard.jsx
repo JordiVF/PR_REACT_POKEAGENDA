@@ -1,5 +1,6 @@
 import { capitalize } from '../utils/strings.js';
 import { tipoTraducido } from '../utils/strings.js';
+import StatsBars from '../components/StatsBars.jsx';
 
 function PokemonCard({ pokemon }) {
   return (
@@ -31,6 +32,7 @@ function PokemonCard({ pokemon }) {
             <dd>{pokemon.height} m</dd>
           </div>
         </dl>
+        <StatsBars stats={pokemon.stats} />
       </div>
     </article>
   );
