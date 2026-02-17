@@ -11,14 +11,20 @@ import TypeFilter from './components/TypeFilter.jsx';
 import Pagination from './components/Pagination.jsx';
 
 function App() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() =>
+    localStorage.getItem('query') || ''
+  );
   const [pokemons, setPokemons] = useState([]);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedType, setSelectedType] = useState(() =>
+    localStorage.getItem('selectedType') || ''
+  );
   const [types, setTypes] = useState([]);
   const PAGE_SIZE = 50;
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() =>
+    Number(localStorage.getItem('page')) || 1
+  );
 
   useEffect(() => {
     async function loadPokemons() {
@@ -53,6 +59,18 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('query', query);
+  }, [query]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedType', selectedType);
+  }, [selectedType]);
+
+  useEffect(() => {
+    localStorage.setItem('page', page);
+  }, [page]);
+
   const filteredPokemons = useMemo(() => {
     const trimmedQuery = query.trim().toLowerCase();
 
@@ -79,7 +97,10 @@ function App() {
         <SearchForm
           value={query}
           onChange={setQuery}
-          onReset={() => setQuery('')}
+          onReset={() => {
+            setQuery('');
+            localStorage.removeItem('query');
+          }}
         />
 
         <TypeFilter
